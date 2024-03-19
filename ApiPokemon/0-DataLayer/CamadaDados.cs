@@ -21,7 +21,8 @@ public class PokemonData
             new Pokemon { Id = 4, Name = "Greninja", Type = "Water/Dark" },
             new Pokemon { Id = 5, Name = "Mwe", Type = "Pysquico" },
             new Pokemon { Id = 6, Name = "MweTwo", Type = "Pysquico" },
-            new Pokemon { Id = 7, Name = "Blastoise", Type = "Water" }
+            new Pokemon { Id = 7, Name = "Blastoise", Type = "Water" },
+            new Pokemon { Id = 8, Name = "Pikachu", Type = "Raio" }
         };
     }
 }
