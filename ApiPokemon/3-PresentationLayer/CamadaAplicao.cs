@@ -1,4 +1,7 @@
 ﻿
+using ApiPokemon._0_DataLayer.Entidades;
+using ApiPokemon._1_BusinessLogicLayer;
+using ApiPokemon._1_BusinessLogicLayer.Servico;
 
 namespace _0_DataLayer
 {
@@ -6,10 +9,14 @@ namespace _0_DataLayer
     {
         static void Main(string[] args)
         {
-            var pokemonService = new PokemonService();
+            //isso e uma instacia, ou seja vc esta trazedno dados da sua camada de dados para a camada de aplicação por uma instancia
+            //var pokemonService = new PokemonService();
+
+            //quando a classe e static vc traz dados direto sem instancia
+            List<Pokemon> pegaTodosPokemon = PokemonBuscar.PokemonService.GetAllPokemon(); //pegar todos pokemon
 
             // Listar todos os Pokémon no console
-            ListarPokemon(pokemonService);
+            ListarPokemon(pegaTodosPokemon);
 
             // Loop para continuar solicitando tipos de busca até que o usuário decida parar
             while (true)
@@ -27,7 +34,7 @@ namespace _0_DataLayer
                     case "1":
                         Console.Write("Digite o ID do Pokémon: ");
                         int id = int.Parse(Console.ReadLine());
-                        var pokemonById = pokemonService.GetPokemonById(id);
+                        var pokemonById = PokemonBuscar.PokemonService.GetPokemonById(id);
                         if (pokemonById != null)
                             Console.WriteLine($"Pokémon encontrado: {pokemonById.Name}, Tipo: {pokemonById.Type}");
                         else
@@ -36,7 +43,7 @@ namespace _0_DataLayer
                     case "2":
                         Console.Write("Digite o nome do Pokémon: ");
                         string nomePokemon = Console.ReadLine();
-                        var pokemonByName = pokemonService.GetPokemonByName(nomePokemon);
+                        var pokemonByName = PokemonBuscar.PokemonService.GetPokemonByName(nomePokemon);
                         if (pokemonByName.Count > 0)
                             Console.WriteLine($"Pokémon encontrado: {pokemonByName[0].Name}, Tipo: {pokemonByName[0].Type}");
                         else
@@ -45,7 +52,7 @@ namespace _0_DataLayer
                     case "3":
                         Console.Write("Digite o tipo do Pokémon: ");
                         string tipoPokemon = Console.ReadLine();
-                        var pokemonByType = pokemonService.GetPokemonByType(tipoPokemon);
+                        var pokemonByType = PokemonBuscar.PokemonService.GetPokemonByType(tipoPokemon);
                         if (pokemonByType.Count > 0)
                             Console.WriteLine($"Pokémon encontrado: {pokemonByType[0].Name}, Tipo: {pokemonByType[0].Type}");
                         else
@@ -59,33 +66,10 @@ namespace _0_DataLayer
                 }
             }
         }
-        public class PokemonService
+
+        static void ListarPokemon(List<Pokemon> pegaTodosPokemon)
         {
-            public List<Pokemon> GetAllPokemon()
-            {
-                return PokemonData.GetAllPokemon();
-            }
-
-            public Pokemon GetPokemonById(int id)
-            {
-                return PokemonData.GetAllPokemon().FirstOrDefault(p => p.Id == id);
-            }
-
-            public List<Pokemon> GetPokemonByName(string name)
-            {
-                return PokemonData.GetAllPokemon().Where(p => p.Name.ToLower().Contains(name.ToLower())).ToList();
-            }
-
-            public List<Pokemon> GetPokemonByType(string type)
-            {
-                return PokemonData.GetAllPokemon().Where(p => p.Type.ToLower().Contains(type.ToLower())).ToList();
-            }
-        }
-
-
-        static void ListarPokemon(PokemonService pokemonService)
-        {
-            var pokemonList = pokemonService.GetAllPokemon();
+            var pokemonList = pegaTodosPokemon;
             Console.WriteLine("Lista de Pokémon:");
             foreach (var pokemon in pokemonList)
             {
@@ -93,17 +77,5 @@ namespace _0_DataLayer
             }
         }
     }
-
-
-    public class PokemonService
-    {
-        public List<Pokemon> GetAllPokemon()
-        {
-            // Aqui você implementa a lógica para obter todos os Pokémon
-            // Por exemplo, você pode chamar um método em PokemonData ou acessar um banco de dados
-            return PokemonData.GetAllPokemon();
-        }
-    }
-
 }
     
